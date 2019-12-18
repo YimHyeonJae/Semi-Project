@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TblbbsMapper">
+	<select id="list" resultType="com.example.domain.TblbbsVO">
+		select * from tblbbss
+		order by id desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id ="total" resultType="int">
+	    select count(*) from tblbbss
+	</select>
+
+	<select id="slist" resultType="com.example.domain.TblbbsVO">
+	   select * from tblbbss 
+	   
+	   <if test="searchType=='title'">
+	      where title like concat('%', #{keyword},'%')
+	   </if>
+	   
+	   <if test="searchType=='writer'">
+	      where writer like concat('%', #{keyword},'%')
+	   </if>
+	   
+	    order by id desc
+	    limit #{pageStart}, #{perPageNum}
+	</select>
+	  <select id="stotal" resultType="int">
+	    select count(*) from tblbbss
+	    
+	    <if test="searchType=='title'">
+	      where title like concat('%',#{keyword},'%')
+	   </if>
+	   
+	   <if test="searchType=='writer'">
+	      where writer like concat('%',#{keyword},'%')
+	   </if>
+	  </select>
+	  
+	<insert id="insert">
+		insert into tblbbss(title, content, writer, wdate) 
+		values(#{title}, #{content}, #{writer},now()) 
+	</insert>
+	<delete id="delete">
+		delete from tblbbss
+		where id=#{id}
+	</delete>
+	<select id="read" resultType="com.example.domain.TblbbsVO">
+		select * from tblbbss where id=#{id}
+	</select>
+	<update id="update">
+		update tblbbss
+		set title=#{title}, content=#{content}, wdate=#{wdate}, writer=#{writer}
+		where id=#{id}
+	</update>
+  
+</mapper>

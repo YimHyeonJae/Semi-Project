@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="YWDGMapper">
+	<select id = "list" resultType="com.example.domain.YWDGVO">
+		select * from main
+		order by id desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id = "total" resultType="int">
+		select count(*) from main
+	</select>
+	
+	<select id = "slist" resultType="com.example.domain.YWDGVO">
+		select * from main
+		
+		<if test = "searchType=='title'">
+			where title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test = "searchType=='writer'">
+			where writer like concat('%', #{keyword}, '%')
+		</if>
+		
+		order by id desc
+		limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id = "stotal" resultType="int">
+		select count(*) from main
+		
+		<if test = "searchType=='title'">
+			where title like concat('%', #{keyword}, '%')
+		</if>
+		
+		<if test = "searchType=='writer'">
+			where writer like concat('%', #{keyword}, '%')
+		</if>
+	</select>
+	
+	<delete id = "delete">
+		delete from main where id = #{id}
+	</delete>
+	
+	<insert id = "insert">
+		insert into main(title, content, writer)
+		values(#{title}, #{content}, #{writer})
+	</insert>
+	
+	<select id = "read" resultType="com.example.domain.YWDGVO">
+		select * from main
+		where id = #{id}
+	</select>
+	
+	<update id="update">
+		update main
+		set title = #{title}, content = #{content}, writer = #{writer}
+		where id = #{id}
+	</update>
+</mapper>
